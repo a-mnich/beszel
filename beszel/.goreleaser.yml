@@ -43,7 +43,7 @@ archives:
   - id: beszel
     format: tar.gz
     builds:
-      - beszel-agent
+      - beszel
     name_template: >-
       {{ .Binary }}_
       {{- .Os }}_
@@ -51,7 +51,7 @@ archives:
   - id: beszel-agent
     format: tar.gz
     builds:
-      - beszel
+      - beszel-agent
     name_template: >-
       {{ .Binary }}_
       {{- .Os }}_
