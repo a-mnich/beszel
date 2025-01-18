@@ -3,6 +3,7 @@ package main
 import (
 	"beszel"
 	"beszel/internal/agent"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,13 @@ import (
 )
 
 func main() {
+	// Define flags for key and port
+	keyFlag := flag.String("key", "", "Public key")
+	portFlag := flag.String("port", "45876", "Port number")
+
+	// Parse the flags
+	flag.Parse()
+
 	// handle flags / subcommands
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
@@ -37,13 +45,23 @@ func main() {
 		}
 	}
 
-	addr := ":45876"
+	// Override the key if the -key flag is provided
+	if *keyFlag != "" {
+		pubKey = []byte(*keyFlag)
+	}
+
+	addr := ":" + *portFlag
 	if portEnvVar, exists := os.LookupEnv("PORT"); exists {
 		// allow passing an address in the form of "127.0.0.1:45876"
 		if !strings.Contains(portEnvVar, ":") {
 			portEnvVar = ":" + portEnvVar
 		}
 		addr = portEnvVar
+	}
+
+	// Override the port if the -port flag is provided
+	if *portFlag != "45876" {
+		addr = ":" + *portFlag
 	}
 
 	agent.NewAgent().Run(pubKey, addr)
