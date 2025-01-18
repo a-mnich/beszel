@@ -29,6 +29,7 @@ builds:
       - linux
       - darwin
       - freebsd
+      - windows
     goarch:
       - amd64
       - arm64
@@ -56,9 +57,9 @@ archives:
       {{- .Os }}_
       {{- .Arch }}
     # use zip for windows archives
-    # format_overrides:
-    #   - goos: windows
-    #     format: zip
+    format_overrides:
+      - goos: windows
+        format: zip
 
 changelog:
   disable: true
