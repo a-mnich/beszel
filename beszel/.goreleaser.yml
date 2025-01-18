@@ -56,10 +56,10 @@ archives:
       {{ .Binary }}_
       {{- .Os }}_
       {{- .Arch }}
-    # use zip for windows archives
+    # upload binaries for windows archives
     format_overrides:
       - goos: windows
-        format: zip
+        format: binary
 
 changelog:
   disable: true
