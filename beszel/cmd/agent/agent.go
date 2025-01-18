@@ -21,16 +21,32 @@ func main() {
 	// handle flags / subcommands
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
-		case "-v":
+		case "version":
 			fmt.Println(beszel.AppName+"-agent", beszel.Version)
+			os.Exit(0)
+		case "help":
+			fmt.Printf("Usage: %s [options] [subcommand]\n", os.Args[0])
+			fmt.Println("\nOptions:")
+			flag.PrintDefaults()
+			fmt.Println("\nSubcommands:")
+			fmt.Println("  version      Display the version")
+			fmt.Println("  help         Display this help message")
+			fmt.Println("  update       Update the agent to the latest version")
+			os.Exit(0)
 		case "update":
 			agent.Update()
+			os.Exit(0)
 		}
-		os.Exit(0)
 	}
 
-	// Try to get the key from the KEY environment variable.
-	pubKey := []byte(os.Getenv("KEY"))
+	var pubKey []byte
+	// Override the key if the -key flag is provided
+	if *keyFlag != "" {
+		pubKey = []byte(*keyFlag)
+	} else {
+		// Try to get the key from the KEY environment variable.
+		pubKey = []byte(os.Getenv("KEY"))
+	}
 
 	// If KEY is not set, try to read the key from the file specified by KEY_FILE.
 	if len(pubKey) == 0 {
@@ -43,11 +59,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-	}
-
-	// Override the key if the -key flag is provided
-	if *keyFlag != "" {
-		pubKey = []byte(*keyFlag)
 	}
 
 	addr := ":" + *portFlag
