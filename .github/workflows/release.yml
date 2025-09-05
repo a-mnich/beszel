@@ -17,6 +17,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug output
+        run: |
+          IS_FORK=${{ github.repository_owner != 'a-mnich' }}
+          echo "IS_FORK: $IS_FORK"
+
       - name: Set up bun
         uses: oven-sh/setup-bun@v2
 
@@ -51,4 +56,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
           WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
-          IS_FORK: ${{ github.repository_owner != 'henrygd' }}
+          IS_FORK: ${{ github.repository_owner != 'a-mnich' }}
